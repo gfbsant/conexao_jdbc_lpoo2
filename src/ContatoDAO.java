@@ -3,14 +3,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ContatoDAO {
-    private String sql = "INSERT INTO contatos (nome, email, endereco, dataNascimento) VALUES (?, ?, ?, ?)";
 
     public void adiciona(Contato contato) {
         Connection connection = null;
         PreparedStatement stmt = null;
+        ConnectionFactory connector = new ConnectionFactory();
         try {
-            connection = ConnectionFactoryComProperties.getConnection();
-            stmt = connection.prepareStatement(sql);
+            connection = connector.getConnection();
+            stmt = connection.prepareStatement("INSERT INTO contatos (nome, email, endereco, dataNascimento) VALUES (?, ?, ?, ?)");
             stmt.setString(1, contato.getNome());
             stmt.setString(2, contato.getEmail());
             stmt.setString(3, contato.getEndereco());

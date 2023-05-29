@@ -5,7 +5,7 @@ public class Contato {
     private String nome;
     private String email;
     private String endereco;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,4 +50,5 @@ public class Contato {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
