@@ -12,12 +12,10 @@ public class ConnectionFactory {
             Properties prop = new Properties();
             InputStream inputStream = ConnectionFactory.class.getResourceAsStream("/bancoDeDados.properties");
             prop.load(inputStream);
-
             String dbDriver = prop.getProperty("db.driver");
             String dbUrl = prop.getProperty("db.url");
             String dbUser = prop.getProperty("db.user");
             String dbPwd = prop.getProperty("db.pwd");
-
             Class.forName(dbDriver);
             return DriverManager.getConnection(dbUrl, dbUser, dbPwd);
         }  catch (ClassNotFoundException ex) {
