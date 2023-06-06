@@ -1,20 +1,13 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
-
-/*2. (Tarefa 5) Crie uma classe que liste contatos inseridos na base dados, utilizando a
-ContatoDao
-a. Crie os métodos:
-public void altera(Contato contato) -> altera o contato com base nos valores recebidos pelo id do contato
-public void remove(Contato contato) -> remove o contato com base no id recebido do contato
-public List<Contato> lista() -> retorna a lista de contatos
-public void insere(Contato contato) -> insere um contato com base no id recebido do contato
-b. Crie uma classe para testar os métodos.*/
-
 public class ContatoDao {
-
 
     Connection connection = null;
     PreparedStatement stmt = null;
@@ -104,16 +97,26 @@ public class ContatoDao {
         try {
             connection = connector.getConnection();
             stmt = connection.prepareStatement("SELECT * FROM contatos");
-            List<Contato> contatos = new Contato().mapList(stmt.executeQuery());
-            for (Contato contato : contatos) {
-                System.out.println("Id: " + contato.getId());
-                System.out.println("Nome: " + contato.getNome());
-                System.out.println("Email: " + contato.getEmail());
-                System.out.println("Endereço: " + contato.getEndereco());
-                System.out.println("Data de Nascimento: " + contato.getDataNascimento().getTime() + "\n");
-            }
+            ResultSet rs = stmt.executeQuery();
+            List<Contato> contatos = new ArrayList<Contato>();
+            while (rs.next()) {
+                Contato contato = new Contato();
+                contato.setId(rs.getLong("id"));
+                contato.setNome(rs.getString("nome"));
+                contato.setEmail(rs.getString("email"));
+                contato.setEndereco(rs.getString("endereco"));
+                java.sql.Date data = rs.getDate("data_nasc");
+                if (data != null) {
+                    Calendar dataNascimento = Calendar.getInstance();
+                    dataNascimento.setTime(data);
+                    contato.setDataNascimento(dataNascimento);
+                }
+                contatos.add(contato);
 
-            return new Contato().mapList(stmt.executeQuery());
+            }
+            contatos.sort(Comparator.comparingLong(Contato::getId).reversed());        
+            return contatos;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -133,5 +136,3 @@ public class ContatoDao {
     }
 
 }
-
-
