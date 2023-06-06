@@ -15,10 +15,13 @@ b. Crie uma classe para testar os métodos.*/
 
 public class ContatoDao {
 
+
+    Connection connection = null;
+    PreparedStatement stmt = null;
+    ConnectionFactory connector = new ConnectionFactory();
+
     public void adiciona(Contato contato) {
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        ConnectionFactory connector = new ConnectionFactory();
+
         try {
             connection = connector.getConnection();
             stmt = connection.prepareStatement(
@@ -45,9 +48,7 @@ public class ContatoDao {
     }
 
     public void altera(Contato contato) {
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        ConnectionFactory connector = new ConnectionFactory();
+
         try {
             connection = connector.getConnection();
             stmt = connection.prepareStatement(
@@ -76,23 +77,21 @@ public class ContatoDao {
     }
 
     public void remove(Contato contato) {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ConnectionFactory connFactory = new ConnectionFactory();
+
         try {
-            conn = connFactory.getConnection();
-            statement = conn.prepareStatement("DELETE FROM contatos WHERE id = ?");
-            statement.setLong(1, contato.getId());
-            statement.execute();
+            connection = connector.getConnection();
+            stmt = connection.prepareStatement("DELETE FROM contatos WHERE id = ?");
+            stmt.setLong(1, contato.getId());
+            stmt.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             try {
-                if (conn != null) {
-                    conn.close();
+                if (connection != null) {
+                    connection.close();
                 }
-                if (statement != null) {
-                    statement.close();
+                if (stmt != null) {
+                    stmt.close();
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -101,22 +100,29 @@ public class ContatoDao {
     }
 
     public List<Contato> lista() {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ConnectionFactory connFactory = new ConnectionFactory();
+
         try {
-            conn = connFactory.getConnection();
-            statement = conn.prepareStatement("SELECT * FROM contatos");
-            return new Contato().mapList(statement.executeQuery());
+            connection = connector.getConnection();
+            stmt = connection.prepareStatement("SELECT * FROM contatos");
+            List<Contato> contatos = new Contato().mapList(stmt.executeQuery());
+            for (Contato contato : contatos) {
+                System.out.println("Id: " + contato.getId());
+                System.out.println("Nome: " + contato.getNome());
+                System.out.println("Email: " + contato.getEmail());
+                System.out.println("Endereço: " + contato.getEndereco());
+                System.out.println("Data de Nascimento: " + contato.getDataNascimento().getTime() + "\n");
+            }
+
+            return new Contato().mapList(stmt.executeQuery());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             try {
-                if (conn != null) {
-                    conn.close();
+                if (connection != null) {
+                    connection.close();
                 }
-                if (statement != null) {
-                    statement.close();
+                if (stmt != null) {
+                    stmt.close();
                 }
 
             } catch (SQLException e) {

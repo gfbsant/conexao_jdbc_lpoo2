@@ -25,6 +25,8 @@ public class Contato {
         this.id = id;
     }
 
+    
+
     public String getNome() {
         return nome;
     }
@@ -45,6 +47,13 @@ public class Contato {
 
     public Contato() {
     }
+
+    public Contato getById(Long id) {
+        Contato contato = new Contato();
+        contato.setId(id);
+        return contato;
+    }
+
 
     public Calendar getDataNascimento() {
         return dataNascimento;
@@ -82,21 +91,33 @@ public class Contato {
         return contatos;
     }
 
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object o) {
+        Contato contato = (Contato) o;
+        if (this == o)
             return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(o instanceof Contato))
             return false;
-        }
-        Contato other = (Contato) obj;
-        return id == other.id;
+        return Objects.equals(nome, contato.nome) &&
+                Objects.equals(email, contato.email) &&
+                Objects.equals(endereco, contato.endereco);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public boolean isContatoExistente(List<Contato> listaContatos, Contato contatoReferencia) {
+        for (Contato contato : listaContatos) {
+            if (contato.equals(contatoReferencia)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }
