@@ -25,8 +25,6 @@ public class Contato {
         this.id = id;
     }
 
-    
-
     public String getNome() {
         return nome;
     }
@@ -53,7 +51,6 @@ public class Contato {
         contato.setId(id);
         return contato;
     }
-
 
     public Calendar getDataNascimento() {
         return dataNascimento;
@@ -91,7 +88,6 @@ public class Contato {
         return contatos;
     }
 
-
     @Override
     public boolean equals(Object o) {
         Contato contato = (Contato) o;
@@ -99,9 +95,8 @@ public class Contato {
             return true;
         if (!(o instanceof Contato))
             return false;
-        return Objects.equals(nome, contato.nome) &&
-                Objects.equals(email, contato.email) &&
-                Objects.equals(endereco, contato.endereco);
+        return Objects.equals(id, contato.id) && Objects.equals(nome, contato.nome)
+                && Objects.equals(email, contato.email) && Objects.equals(endereco, contato.endereco);
     }
 
     @Override
@@ -117,7 +112,5 @@ public class Contato {
         }
         return false;
     }
-
-
 
 }
