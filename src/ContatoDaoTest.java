@@ -1,7 +1,6 @@
 import java.util.Calendar;
 import java.util.List;
 import static org.junit.Assert.*;
-import org.junit.Test;
 
 public class ContatoDaoTest {
 
