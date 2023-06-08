@@ -1,8 +1,21 @@
+package contato;
+
 import java.util.Calendar;
 import java.util.List;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ContatoDaoTest {
+
+    @Test
+    public void testLista() {
+
+        ContatoDao dao = new ContatoDao();
+
+        List<Contato> listaContatos = dao.lista();
+        assertNotNull(listaContatos);
+    }
 
     @Test
     public void testAdiciona() {
@@ -46,15 +59,6 @@ public class ContatoDaoTest {
         assertEquals("Novo Nome", contatoAlterado.getNome());
         assertEquals("novoemail@example.com", contatoAlterado.getEmail());
         assertEquals("Novo Endereco", contatoAlterado.getEndereco());
-    }
-
-    @Test
-    public void testLista() {
-
-        ContatoDao dao = new ContatoDao();
-
-        List<Contato> listaContatos = dao.lista();
-        assertNotNull(listaContatos);
     }
 
     @Test

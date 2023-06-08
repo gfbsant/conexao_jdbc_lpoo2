@@ -1,3 +1,5 @@
+package connection;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -7,10 +9,10 @@ import java.util.Properties;
 
 public class ConnectionFactory {
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             Properties prop = new Properties();
-            InputStream inputStream = ConnectionFactory.class.getResourceAsStream("/bancoDeDados.properties");
+            InputStream inputStream = ConnectionFactory.class.getResourceAsStream("/connection/bancoDeDados.properties");
             prop.load(inputStream);
             String dbDriver = prop.getProperty("db.driver");
             String dbUrl = prop.getProperty("db.url");

@@ -1,3 +1,6 @@
+package contato;
+
+import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,16 +10,17 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class ContatoDao {
 
-    Connection connection = null;
-    PreparedStatement stmt = null;
     ConnectionFactory connector = new ConnectionFactory();
+    Connection connection = null;
+    PreparedStatement stmt;
 
     public void adiciona(Contato contato) {
 
         try {
-            connection = connector.getConnection();
+            connection = ConnectionFactory.getConnection();
             stmt = connection.prepareStatement(
                     "INSERT INTO contatos (nome, email, endereco, data_nasc) VALUES (?, ?, ?, ?)");
             stmt.setString(1, contato.getNome());
@@ -43,7 +47,7 @@ public class ContatoDao {
     public void altera(Contato contato) {
 
         try {
-            connection = connector.getConnection();
+            connection = ConnectionFactory.getConnection();
             stmt = connection.prepareStatement(
                     "UPDATE contatos SET nome = ?, email = ?, endereco = ?, data_nasc = ? WHERE id = ?");
             stmt.setString(1, contato.getNome());
@@ -72,7 +76,7 @@ public class ContatoDao {
     public void remove(Contato contato) {
 
         try {
-            connection = connector.getConnection();
+            connection = ConnectionFactory.getConnection();
             stmt = connection.prepareStatement("DELETE FROM contatos WHERE id = ?");
             stmt.setLong(1, contato.getId());
             stmt.execute();
@@ -114,7 +118,7 @@ public class ContatoDao {
                 contatos.add(contato);
 
             }
-            contatos.sort(Comparator.comparingLong(Contato::getId).reversed());        
+            contatos.sort(Comparator.comparingLong(Contato::getId).reversed());
             return contatos;
 
         } catch (SQLException e) {
